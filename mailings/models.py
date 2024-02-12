@@ -18,6 +18,12 @@ class Mailing(models.Model):
     text = models.TextField(blank=False, null=True, default='Удалите этот текст перед отправкой')
     clients = models.ManyToManyField(Clients, blank=False, null=True)
     end_time = models.DateTimeField()
+    STATUS_CHOICES = (
+        ('open', 'Открыт'),
+        ('working', 'В работе'),
+        ('archived', 'Архив'),
+    )
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='open')
 
     def formatted_created_at(self):
         return timezone.localtime(self.created_at).strftime("%Y-%m-%d %H:%M:%S")

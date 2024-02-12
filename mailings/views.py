@@ -75,6 +75,7 @@ class MailApi(APIView):
         serialized = MailSerializer(all_mailing, many=True)
         return Response(serialized.data, status=200)
 
+    # удаление рассылки
     def delete(self, request: Request, **kwargs) -> Response:
         mailing_id = kwargs.get('pk')
         if not mailing_id:
@@ -83,11 +84,18 @@ class MailApi(APIView):
         mailing.delete()
         return Response({'success': f'Рассылка id: {mailing_id} удалена!'}, status=status.HTTP_204_NO_CONTENT)
 
+    # редактирование рассылки
     def patch(self, request: Request, *args, **kwargs) -> Response:
         mailing_id = kwargs.get('pk')
         if not mailing_id:
             return Response({'error': 'Не указан идентификатор рассылки'}, status=status.HTTP_400_BAD_REQUEST)
         data = request.data
+
+        # убираем created_at, чтобы не менять в базе, если указано в запросе
+        check_created = data.get('created_at')
+        if check_created:
+            data.pop('created_at')
+
         mailing = generics.get_object_or_404(Mailing, id=mailing_id)
         if not data:
             return Response({'error': 'не указаны данные для изменения'}, status=status.HTTP_400_BAD_REQUEST)
