@@ -17,6 +17,7 @@ class Messages(models.Model):
     status = models.BooleanField(default=False)  # если True - отправлено
     mailings = models.ForeignKey(Mailing, on_delete=models.SET_NULL, blank=False, null=True)  # рассылка
     client = models.ForeignKey(Clients, on_delete=models.SET_NULL, blank=False, null=True)  # клиент
+    errors = models.TextField(null=True)
 
     def formatted_created_at(self):
         return timezone.localtime(self.created_at).strftime("%Y-%m-%d %H:%M:%S")

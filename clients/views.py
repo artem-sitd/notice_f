@@ -6,10 +6,16 @@ from clients.models import Clients, Tag
 from rest_framework import status
 from .serializers import TagSerializer, ClientSerializer
 from rest_framework.exceptions import ValidationError
+from drf_spectacular.utils import extend_schema, extend_schema_view
 
 
 class ClientsApi(APIView):
     # создание клиента
+    @extend_schema(request=ClientSerializer, responses={200: ClientSerializer},
+                   description='Создание клиента, обязательные параметры: phone (7 цифр), tag, timezone (Europe/Kaliningrad,'
+                               ' Europe/Moscow, Europe/Samara, Asia/Yekaterinburg, Asia/Omsk,'
+                               'Asia/Krasnoyarsk, Asia/Irkutsk, Asia/Yakutsk, Asia/Vladivostok, Asia/Magadan,'
+                               'Asia/Kamchatka]), mobile_code (три цифры) ')
     def post(self, request: Request, **kwargs) -> Response:
         phone = request.data.get('phone')
         tag = request.data.get('tag')
@@ -34,6 +40,9 @@ class ClientsApi(APIView):
         return Response({'tag': 'не существующий тэг'}, status=status.HTTP_400_BAD_REQUEST)
 
     # для получения всех или конкретного клиента
+    @extend_schema(request=ClientSerializer, responses={200: ClientSerializer},
+                   description='Чтобы получить инфо по конкретному клиенту - необходимо в конце URL добавить id '
+                               'пользователя, чтобы получить весь перечень клиентов - не передавайте ничего после url')
     def get(self, request: Request, **kwargs) -> Response:
         client_id = kwargs.get('pk')
         if client_id:
@@ -45,6 +54,8 @@ class ClientsApi(APIView):
         return Response(data=serialized.data, status=200)
 
     # для удаления клиента {pk}
+    @extend_schema(request=ClientSerializer, responses={200: ClientSerializer},
+                   description='необходимо в url передать id клиента для удаления, удаление происходит без подтверждения')
     def delete(self, request: Request, **kwargs) -> Response:
         client_id = kwargs.get('pk')
         if not client_id:
@@ -54,6 +65,9 @@ class ClientsApi(APIView):
         return Response({'success': 'Клиент успешно удален'}, status=status.HTTP_204_NO_CONTENT)
 
     # для изменения клиента {pk}
+    @extend_schema(request=ClientSerializer, responses={200: ClientSerializer},
+                   description='Необходимо в конце url передать id редактируемого клиента, в теле запроса передать'
+                               ' поля для редактирования')
     def patch(self, request: Request, *args, **kwargs) -> Response:
         client_id = kwargs.get('pk')
         if not client_id:
@@ -74,6 +88,8 @@ class ClientsApi(APIView):
 # протестирован в Postman
 class TagsApi(APIView):
     # создание тэга
+    @extend_schema(request=TagSerializer, responses=TagSerializer,
+                   description='принимает только поле text')
     def post(self, request: Request, **kwargs) -> Response:
         text = request.data.get('text')
         if text and len(text) > 1:
@@ -83,12 +99,16 @@ class TagsApi(APIView):
         return Response({'error': 'Не указан текст тэга'}, status=status.HTTP_400_BAD_REQUEST)
 
     # полученеи списка всех тэгов
+    @extend_schema(request=TagSerializer, responses=TagSerializer, description='отдает все тэги')
     def get(self, request: Request) -> Response:
         data = Tag.objects.all()
         serialized = TagSerializer(data, many=True)
         return Response(serialized.data, status=200)
 
     # для удаления тэга
+    @extend_schema(request=TagSerializer, responses=TagSerializer,
+                   description='можно передать или поле id или text в теле запроса, в url передавать id не надо,'
+                               ' удаление без подтверждения')
     def delete(self, request: Request) -> Response:
         data = request.data
         if 'id' in data:
@@ -103,9 +123,13 @@ class TagsApi(APIView):
         return Response({'success': 'Тег успешно удален'}, status=status.HTTP_204_NO_CONTENT)
 
     # для изменения тэга {pk}
+    @extend_schema(request=TagSerializer, responses=TagSerializer,
+                   description='в url надо передать id тэга, в тело запроса поле text')
     def patch(self, request: Request, *args, **kwargs) -> Response:
         data = request.data
         tag_id = kwargs.get('pk')
+        if not tag_id:
+            return Response({'error': 'Не указан идентификатор тэга'}, status=status.HTTP_400_BAD_REQUEST)
         tag = generics.get_object_or_404(Tag, id=tag_id)
 
         if 'text' in data:

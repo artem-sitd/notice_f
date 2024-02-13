@@ -7,9 +7,16 @@ from .models import Mailing
 from rest_framework.views import APIView
 from .serializers import MailSerializer
 from rest_framework.exceptions import ValidationError
+from drf_spectacular.utils import extend_schema
 
 
 class MailApi(APIView):
+
+    @extend_schema(request=MailSerializer, responses=MailSerializer,
+                   description='принимает поля text, end_time в формате: **%Y-%m-%d %H:%M:%S**, mobile_code для'
+                               ' фильтрации клиентов и(или) тэг, filter_type ==1 **(фильтрует по двум параметрам из'
+                               ' полных перечней клиентов, объединяет, убирает дубликаты)** или ==2 **(фильтрует '
+                               'сначала по мобильному коду, затем по тэгу)**')
     def post(self, request: Request, **kwargs) -> Response:
         text = request.data.get('text')
         end_time = request.data.get('end_time')
@@ -65,6 +72,9 @@ class MailApi(APIView):
         return Response(serialized.data, status=status.HTTP_201_CREATED)
 
     # если не указывать id в url - выведет весь имеющийся перечень рассылок из базы
+    @extend_schema(request=MailSerializer, responses=MailSerializer,
+                   description='можно передать в конец url id рассылки, чтобы получить конкретную, или не передавать '
+                               '- тогда выведет полынй перечень')
     def get(self, request: Response, **kwargs) -> Response:
         mailing_id = kwargs.get('pk')
         if mailing_id:
@@ -76,6 +86,7 @@ class MailApi(APIView):
         return Response(serialized.data, status=200)
 
     # удаление рассылки
+    @extend_schema(description='передать в конец url id для удаления без подтверждения')
     def delete(self, request: Request, **kwargs) -> Response:
         mailing_id = kwargs.get('pk')
         if not mailing_id:
@@ -85,6 +96,8 @@ class MailApi(APIView):
         return Response({'success': f'Рассылка id: {mailing_id} удалена!'}, status=status.HTTP_204_NO_CONTENT)
 
     # редактирование рассылки
+    @extend_schema(request=MailSerializer, responses=MailSerializer,
+                   description='передать в конец url id для редактирования')
     def patch(self, request: Request, *args, **kwargs) -> Response:
         mailing_id = kwargs.get('pk')
         if not mailing_id:

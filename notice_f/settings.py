@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'clients.apps.ClientsConfig',
     'mailings.apps.MailingsConfig',
     'messages_app.apps.Messages_appConfig',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -129,11 +130,17 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# REST_FRAMEWORK = {
-#     "COERCE_DECIMAL_TO_STRING": False,
-#     "DEFAULT_AUTHENTICATION_CLASSES": [
-#         "rest_framework.authentication.BasicAuthentication",
-#         "rest_framework.authentication.SessionAuthentication",
-#     ],
-#     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
-# }
+REST_FRAMEWORK = {
+    # "COERCE_DECIMAL_TO_STRING": False,
+    # "DEFAULT_AUTHENTICATION_CLASSES": [
+    #     "rest_framework.authentication.BasicAuthentication",
+    #     "rest_framework.authentication.SessionAuthentication",
+    # ],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Notice_f API project',
+    'DESCRIPTION': 'Эндпойнты проекта',
+    'SERVE_INCLUDE_SCHEMA':False,
+    'VERSION':'1.0.0',
+}
