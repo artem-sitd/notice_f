@@ -27,7 +27,7 @@ class Tag(models.Model):
     text = models.CharField(max_length=30, blank=False, null=True)
 
     def __str__(self):
-        return f'{self.text}'
+        return f'{self.pk}, {self.text}'
 
 
 class Clients(models.Model):
@@ -52,4 +52,4 @@ class Clients(models.Model):
                                    validators=[MinLengthValidator(3), MaxLengthValidator(3)])
 
     def __str__(self) -> str:
-        return f'{self.mobile_code}{self.phone}, {self.tag}, {self.timezone}'
+        return f'{self.pk}, Mobile_code: {self.mobile_code}, Phone: {self.phone}, Tag: {self.tag}, Timezone: {self.timezone}'

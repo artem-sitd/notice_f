@@ -14,10 +14,10 @@ from django.utils import timezone
 
 
 class Mailing(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)  # Дата создания
+    start_time = models.DateTimeField(blank=False, null=True)  # Время начала рассылки
     text = models.TextField(blank=False, null=True, default='Удалите этот текст перед отправкой')
     clients = models.ManyToManyField(Clients, blank=False, null=True)
-    end_time = models.DateTimeField()
+    end_time = models.DateTimeField(blank=False, null=True)  # Время окончания рассылки
     STATUS_CHOICES = (
         ('open', 'Открыт'),
         ('working', 'В работе'),
@@ -25,11 +25,11 @@ class Mailing(models.Model):
     )
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='open')
 
-    def formatted_created_at(self):
-        return timezone.localtime(self.created_at).strftime("%Y-%m-%d %H:%M:%S")
+    def formatted_start_time(self):
+        return timezone.localtime(self.start_time).strftime("%Y-%m-%d %H:%M:%S")
 
     def formatted_end_time(self):
         return timezone.localtime(self.end_time).strftime("%Y-%m-%d %H:%M:%S")
 
     def __str__(self) -> str:
-        return f'{self.created_at}, {self.end_time}'
+        return f'{self.pk}, Start_time: {self.start_time}, end_time: {self.end_time}'

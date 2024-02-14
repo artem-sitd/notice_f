@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework import status, generics
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -104,12 +103,14 @@ class MailApi(APIView):
             return Response({'error': 'Не указан идентификатор рассылки'}, status=status.HTTP_400_BAD_REQUEST)
         data = request.data
 
+        mailing = generics.get_object_or_404(Mailing, id=mailing_id)
+        if mailing and mailing.status == 'archived':
+            return Response({'error': 'рассылка архивирована!'}, status=status.HTTP_400_BAD_REQUEST)
+
         # убираем created_at, чтобы не менять в базе, если указано в запросе
         check_created = data.get('created_at')
         if check_created:
             data.pop('created_at')
-
-        mailing = generics.get_object_or_404(Mailing, id=mailing_id)
         if not data:
             return Response({'error': 'не указаны данные для изменения'}, status=status.HTTP_400_BAD_REQUEST)
 
