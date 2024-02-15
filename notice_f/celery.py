@@ -28,12 +28,4 @@ app.conf.beat_schedule = {
         'task': 'api.tasks.start_mailing',
         'schedule': crontab(hour='0', minute='0'),  # Задача будет выполняться ежедневно в полночь
     },
-    # 'task5sec': {
-    #     'task': 'contracts.tasks.test5sec',
-    #     'schedule': timedelta(seconds=5),
-    # },
-    # 'task10sec': {
-    #     'task': 'contracts.tasks.test10sec',
-    #     'schedule': timedelta(seconds=10)
-    # }
 }
