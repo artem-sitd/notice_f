@@ -21,6 +21,7 @@ services:
         max-size: "200k"
         max-file: "10"
     volumes:
+      # изменить эту строку
       - "./mysite/database:/app/database"
 
 
