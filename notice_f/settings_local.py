@@ -19,12 +19,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-
+# SECRET_KEY = 'django-insecure-+o7k^h!_)xxubj*!@u65noq&9v5#z99_y)49)mek+odb^q0y75'
 SECRET_KEY = config.DJANGO_SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config.DJANGO_DEBUG
 
-ALLOWED_HOSTS = ["0.0.0.0:8000", "127.0.0.1:8000"]
+ALLOWED_HOSTS = ["0.0.0.0:8000"]
 
 # Application definition
 
@@ -141,8 +141,8 @@ REST_FRAMEWORK = {
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Notice_f API project',
     'DESCRIPTION': 'Эндпойнты проекта',
-    'SERVE_INCLUDE_SCHEMA': False,
-    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA':False,
+    'VERSION':'1.0.0',
 }
 
 # Celery Configuration Options

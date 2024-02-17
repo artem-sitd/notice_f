@@ -9,15 +9,15 @@ else:
 
 DATABASE_USER = os.getenv("DATABASE_USER")
 DATABASE_PWD = os.getenv("DATABASE_PWD")
-DJANGO_SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
-DATABASE_NAME = os.getenv('DATABASE_NAME')
-DATABASE_HOST = os.getenv('DATABASE_HOST')
-DJANGO_DEBUG = os.getenv('DJANGO_DEBUG')
-TOKEN = os.getenv('TOKEN')
+DJANGO_SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+DATABASE_NAME = os.getenv("DATABASE_NAME")
+DATABASE_HOST = os.getenv("DATABASE_HOST")
+DJANGO_DEBUG = os.getenv("DJANGO_DEBUG")
+TOKEN = os.getenv("API_TOKEN")
 
 
 class LevelFileHandler(logging.Handler):
-    def __init__(self, path, mode='a'):
+    def __init__(self, path, mode="a"):
         super().__init__()
         self.path = path
         self.mode = mode
@@ -25,29 +25,53 @@ class LevelFileHandler(logging.Handler):
     def emit(self, record: logging.LogRecord) -> None:
         message = self.format(record)
         with open(self.path, self.mode) as file:
-            file.write(message + '\n')
+            file.write(message + "\n")
 
 
 dict_config = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'standard': {
-            'format': "%(levelname)s | %(name)s | %(asctime)s | %(lineno)s | %(message)s"
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "standard": {
+            "format": "%(levelname)s | %(name)s | %(asctime)s | %(lineno)s | %(message)s"
         }
     },
-    'handlers': {
-        'all_errors_handler': {
-            '()': LevelFileHandler,
-            'level': logging.DEBUG,
-            'path': 'all.log',
-            'formatter': 'standard',
+    "handlers": {
+        "all_errors_handler": {
+            "()": LevelFileHandler,
+            "level": logging.DEBUG,
+            "path": "all.log",
+            "formatter": "standard",
         },
     },
-    'loggers': {
-        '': {
-            'level': 'DEBUG',
-            'handlers': ['all_errors_handler'],
+    "loggers": {
+        "": {
+            "level": "DEBUG",
+            "handlers": ["all_errors_handler"],
+        },
+    },
+}
+
+dict_config_celery = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "standard": {
+            "format": "%(levelname)s | %(name)s | %(asctime)s | %(lineno)s | %(message)s"
+        }
+    },
+    "handlers": {
+        "all_errors_handler": {
+            "()": LevelFileHandler,
+            "level": logging.INFO,
+            "path": "celery.log",
+            "formatter": "standard",
+        },
+    },
+    "loggers": {
+        "": {
+            "level": "DEBUG",
+            "handlers": ["all_errors_handler"],
         },
     },
 }

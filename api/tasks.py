@@ -1,4 +1,4 @@
-from config import TOKEN, dict_config
+import config
 import logging.config
 import requests
 import time
@@ -8,12 +8,12 @@ from mailings.models import Mailing
 from celery import shared_task
 from django.utils import timezone
 
-logging.config.dictConfig(dict_config)
+logging.config.dictConfig(config.dict_config_celery)
 logger = logging.getLogger(__name__)
 
 url = 'https://probe.fbrq.cloud/v1/send'
 headers = {
-    'Authorization': f'Bearer {TOKEN}',
+    'Authorization': f'Bearer {config.TOKEN}',
     'Content-Type': 'application/json'
 }
 
@@ -53,12 +53,12 @@ def send_request_with_retry(url, payload, headers, max_retries=3, retry_delay=5)
 
 
 @shared_task(bind=True, retry_backoff=300)
-def start_mailing(self, *args, **kwargs):
+def start_mailing(*args, **kwargs):
     logger.info('Вход в start_mailing')
     try:
         logger.info('start_mailing проверка токена')
         current_time = timezone.now()
-        if not TOKEN:
+        if not config.TOKEN:
             logger.error('start_mailing ТОКЕН НЕ ЗАГРУЖЕН')
             return 'апи токен не загружен'
         logger.info('start_mailing фильтруем Mailing для рассылок')
@@ -73,6 +73,7 @@ def start_mailing(self, *args, **kwargs):
         for mailing in mailings:
             logger.info('start_mailing Mailing найдены, производим подготовку')
             mailing.status = 'working'
+            mailing.save()
             payload = {}
             id = mailing.id
             text = mailing.text
@@ -106,9 +107,10 @@ def start_mailing(self, *args, **kwargs):
                     print(f'Ошибка при выполнении запроса: {payload},ошибка: {e}')
             logger.info('start_mailing mailing.status = archived')
             mailing.status = 'archived'
+            mailing.save()
         return 'Рассылки завершены'
     except Exception as exc:
         logger.info(f'start_mailing ошибка в конце {exc}, задача будет перезапушена через 5 минут')
-        # Если возникает ошибка, Celery автоматически повторно запустит эту задачу через указанное время
-        raise self.retry(exc=exc,
-                         countdown=300)  # countdown=300 означает, что задача будет повторно запущена через 5 минут
+    #     # Если возникает ошибка, Celery автоматически повторно запустит эту задачу через указанное время
+    #     raise self.retry(exc=exc,
+    #                      countdown=300)  # countdown=300 означает, что задача будет повторно запущена через 5 минут
