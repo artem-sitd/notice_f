@@ -2,6 +2,7 @@ version: "3.10.12"
 
 services:
   app:
+    container_name: "notice_django"
     build:
       dockerfile: "./Dockerfile"
     command:
@@ -9,19 +10,65 @@ services:
       - "notice_f.wsgi:application"
       - "--bind"
       - "0.0.0.0:8000"
-
-    ports:
-      - "8000:8000"
-    restart: "always"
-    env_file:
-      - ".env"
     logging:
       driver: "json-file"
       options:
         max-size: "200k"
         max-file: "10"
+    ports:
+      - "8000:8000"
+    restart: "always"
+    env_file:
+      - ".env"
+    depends_on:
+      - db
+
+  db:
+    container_name: "postgres"
+    image: postgres:latest
+    env_file:
+      - ".env"
     volumes:
-      # изменить эту строку
-      - "./mysite/database:/app/database"
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
 
+  redis:
+    container_name: "redis"
+    image: redis:latest
+    depends_on:
+      - db
+      - app
+    ports:
+      - "6379:6379"
 
+  celery_worker:
+    container_name: "celery_worker"
+    image: celery:latest
+    command:
+      - "celery"
+      - "-A"
+      - "notice_f"
+      - "worker"
+      - "-l "
+      - "info"
+    depends_on:
+      - db
+      - app
+      - redis
+
+  celery_beat:
+    container_name: "celery_beat"
+    image: celery:latest
+    command:
+      - "celery"
+      - "-A"
+      - "notice_f"
+      - "beat"
+      - "-l "
+      - "info"
+    depends_on:
+      - db
+      - app
+      - celery_worker

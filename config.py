@@ -7,12 +7,13 @@ if not find_dotenv():
 else:
     load_dotenv()
 
-DATABASE_USER = os.getenv("DATABASE_USER")
-DATABASE_PWD = os.getenv("DATABASE_PWD")
-DJANGO_SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
-DATABASE_NAME = os.getenv("DATABASE_NAME")
-DATABASE_HOST = os.getenv("DATABASE_HOST")
+POSTGRES_USER = os.getenv("POSTGRES_USER")
+POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")
+POSTGRES_PORT = os.getenv("POSTGRES_PORT")
+POSTGRES_DB = os.getenv("POSTGRES_DB")
+POSTGRES_HOST = os.getenv("POSTGRES_HOST")
 DJANGO_DEBUG = os.getenv("DJANGO_DEBUG")
+DJANGO_SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 TOKEN = os.getenv("API_TOKEN")
 
 

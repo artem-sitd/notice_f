@@ -1,16 +1,13 @@
-import sys
 from messages_app.models import Messages
 from django.core.management import BaseCommand
-from django.contrib.contenttypes.models import ContentType
 from config import TOKEN
 import requests, time
 from mailings.models import Mailing
 from clients.models import Clients
-import pdb
 
 url = 'https://probe.fbrq.cloud/v1/send'
 headers = {
-    'Authorization': f'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mzg5Mjk4MzQsImlzcyI6ImZhYnJpcXVlIiwibmFtZSI6Imh0dHBzOi8vdC5tZS9hcnRfa2FrX2RlbGEifQ.8eo8bRpbad94wGmrMNnKrh9wjh0DlsYSVOtRwmnbjdA',
+    'Authorization': f'Bearer {TOKEN}',
     'Content-Type': 'application/json'
 }
 

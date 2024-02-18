@@ -1,0 +1,10 @@
+# Virtual environment
+.env
+.venv/
+venv/
+
+#all
+docker-compose.yml
+dump/
+test_start.sh
+Dockerfile
