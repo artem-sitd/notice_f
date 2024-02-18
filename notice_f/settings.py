@@ -26,7 +26,7 @@ DEBUG = config.DJANGO_DEBUG
 
 ALLOWED_HOSTS = ["0.0.0.0:8000",
                  "127.0.0.1:8000",
-                 "51.250.0.188",
+                 "158.160.120.128",
                  "10.128.0.29"]
 
 # Application definition
