@@ -1,10 +1,14 @@
-version: "3.10.12"
+version: "3.10"
+
+volumes:
+  postgres_data:
 
 services:
   app:
-    container_name: "notice_django"
     build:
+      context: .
       dockerfile: "./Dockerfile"
+    container_name: "notice_django"
     command:
       - "gunicorn"
       - "notice_f.wsgi:application"
@@ -34,41 +38,41 @@ services:
     ports:
       - "5432:5432"
 
-  redis:
-    container_name: "redis"
-    image: redis:latest
-    depends_on:
-      - db
-      - app
-    ports:
-      - "6379:6379"
-
-  celery_worker:
-    container_name: "celery_worker"
-    image: celery:latest
-    command:
-      - "celery"
-      - "-A"
-      - "notice_f"
-      - "worker"
-      - "-l "
-      - "info"
-    depends_on:
-      - db
-      - app
-      - redis
-
-  celery_beat:
-    container_name: "celery_beat"
-    image: celery:latest
-    command:
-      - "celery"
-      - "-A"
-      - "notice_f"
-      - "beat"
-      - "-l "
-      - "info"
-    depends_on:
-      - db
-      - app
-      - celery_worker
+#  redis:
+#    container_name: "redis"
+#    image: redis:latest
+#    depends_on:
+#      - db
+#      - app
+#    ports:
+#      - "6379:6379"
+#
+#  celery_worker:
+#    container_name: "celery_worker"
+#    image: celery:latest
+#    command:
+#      - "celery"
+#      - "-A"
+#      - "notice_f"
+#      - "worker"
+#      - "-l "
+#      - "info"
+#    depends_on:
+#      - db
+#      - app
+#      - redis
+#
+#  celery_beat:
+#    container_name: "celery_beat"
+#    image: celery:latest
+#    command:
+#      - "celery"
+#      - "-A"
+#      - "notice_f"
+#      - "beat"
+#      - "-l "
+#      - "info"
+#    depends_on:
+#      - db
+#      - app
+#      - celery_worker
