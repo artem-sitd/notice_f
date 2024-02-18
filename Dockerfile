@@ -11,4 +11,4 @@ RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 COPY . .
-CMD ["gunicorn", "notice_f.wsgi:application", "--bind", "0.0.0.0:8000"]
+#CMD ["gunicorn", "notice_f.wsgi:application", "--bind", "0.0.0.0:8000"]
