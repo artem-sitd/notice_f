@@ -14,6 +14,7 @@ services:
       - "notice_f.wsgi:application"
       - "--bind"
       - "0.0.0.0:8000"
+      - "--access-logfile=-"
     logging:
       driver: "json-file"
       options:
