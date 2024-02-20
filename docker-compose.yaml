@@ -49,12 +49,14 @@ services:
       - "6379:6379"
 
   celery_worker:
+    volumes:
+      - ".:/app"
     container_name: "celery_worker"
     image: celery:latest
     command:
       - "celery"
       - "-A"
-      - "notice_f_app"
+      - "app.notice_f"
       - "worker"
       - "-l "
       - "info"
@@ -62,16 +64,17 @@ services:
       - db
       - app
       - redis
-    volumes:
-      - ".:/app"
+
 
   celery_beat:
+    volumes:
+      - ".:/app"
     container_name: "celery_beat"
     image: celery:latest
     command:
       - "celery"
       - "-A"
-      - "notice_f_app"
+      - "app.notice_f"
       - "beat"
       - "-l "
       - "info"
@@ -79,5 +82,3 @@ services:
       - db
       - app
       - celery_worker
-    volumes:
-      - ".:/app"
