@@ -23,7 +23,7 @@ API_TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mzg5Mjk4MzQsImlzcyI6
 
 ## Проблемы
 При локальной разработке celery и redis выполняют периодические задачи, однако не удалось реализовать в docker 
-(не импортирует правильно модуль notice_f, предполагаю не верно указываю volumes).
+(KeyError: 'api.tasks.start_mailing', предполагаю не верно указываю build или прочее).
 <u>Планирую решить данную проблему в ближайшее время</u>
 
 ## Endpoints:
