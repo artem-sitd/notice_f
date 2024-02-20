@@ -25,6 +25,8 @@ services:
     restart: "always"
     env_file:
       - ".env"
+    volumes:
+      - "./:/app"
     depends_on:
       - db
 
@@ -62,6 +64,8 @@ services:
       - db
       - app
       - redis
+    volumes:
+      - "./:/app"
 
   celery_beat:
     container_name: "celery_beat"
@@ -77,3 +81,5 @@ services:
       - db
       - app
       - celery_worker
+    volumes:
+      - "./:/app"
