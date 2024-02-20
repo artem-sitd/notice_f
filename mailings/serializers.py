@@ -26,7 +26,7 @@ class MailSerializer(serializers.ModelSerializer):
 
         # Проверяем разницу во времени
         current_time = datetime.now()
-        if value - current_time < timedelta(minutes=10):
+        if formatted_start_time - current_time < timedelta(minutes=10):
             logger.info('MailSerializer (validate_start_time) Разница во времени должна быть не менее 5 минут')
             raise serializers.ValidationError(
                 f"Разница во времени должна быть не менее 5 минут, текущее время: {current_time}")
