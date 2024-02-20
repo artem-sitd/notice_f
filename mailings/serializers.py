@@ -18,14 +18,14 @@ class MailSerializer(serializers.ModelSerializer):
         logger.info('вход в MailSerializer (validate_start_time)')
         # Проверяем соответствие формата данных
         try:
-            formatted_start_time = timezone.localtime(value).strftime("%Y-%m-%d %H:%M:%S")
+            formatted_start_time = value.strftime("%Y-%m-%d %H:%M:%S")
         except ValueError as ve:
             logger.info('MailSerializer (validate_start_time) EXCEPT ValueError - Некорректный формат времени')
             raise serializers.ValidationError(
                 {"start_time": ["Некорректный формат времени, необходимо использовать %Y-%m-%d %H:%M:%S"]})
 
         # Проверяем разницу во времени
-        current_time = timezone.now()
+        current_time = datetime.now()
         if value - current_time < timedelta(minutes=10):
             logger.info('MailSerializer (validate_start_time) Разница во времени должна быть не менее 5 минут')
             raise serializers.ValidationError(
@@ -36,7 +36,7 @@ class MailSerializer(serializers.ModelSerializer):
         logger.info('вход в MailSerializer (validate_end_time)')
         # Проверяем соответствие формата данных
         try:
-            formatted_end_time = timezone.localtime(value).strftime("%Y-%m-%d %H:%M:%S")
+            formatted_end_time = value.strftime("%Y-%m-%d %H:%M:%S")
         except ValueError as ve:
             logger.info('MailSerializer (validate_end_time) EXCEPT ValueError - Некорректный формат времени')
             raise serializers.ValidationError(
@@ -49,7 +49,7 @@ class MailSerializer(serializers.ModelSerializer):
         # return value
         start_time_str = self.initial_data.get('start_time')
         if start_time_str:
-            start_time = datetime.strptime(start_time_str, "%Y-%m-%d %H:%M:%S").astimezone(timezone.utc)
+            start_time = datetime.strptime(start_time_str, "%Y-%m-%d %H:%M:%S")
             if value - start_time < timedelta(minutes=10):
                 logger.info('MailSerializer (validate_end_time) Разница во времени должна быть не менее 5 минут')
                 raise serializers.ValidationError("Разница между start_time и end_time должна быть не менее 10 минут")
