@@ -39,45 +39,45 @@ services:
     ports:
       - "5433:5432"
 
-  redis:
-    container_name: "redis"
-    image: redis:latest
-    depends_on:
-      - db
-      - app
-    ports:
-      - "6379:6379"
-
-  celery_worker:
-    container_name: "celery_worker"
-    image: celery:latest
-    command:
-      - "celery"
-      - "-A"
-      - "notice_f"
-      - "worker"
-      - "-l "
-      - "info"
-    depends_on:
-      - db
-      - app
-      - redis
-    volumes:
-      - "./:/app"
-
-  celery_beat:
-    container_name: "celery_beat"
-    image: celery:latest
-    command:
-      - "celery"
-      - "-A"
-      - "notice_f"
-      - "beat"
-      - "-l "
-      - "info"
-    depends_on:
-      - db
-      - app
-      - celery_worker
-    volumes:
-      - "./:./app"
+#  redis:
+#    container_name: "redis"
+#    image: redis:latest
+#    depends_on:
+#      - db
+#      - app
+#    ports:
+#      - "6379:6379"
+#
+#  celery_worker:
+#    container_name: "celery_worker"
+#    image: celery:latest
+#    command:
+#      - "celery"
+#      - "-A"
+#      - "notice_f"
+#      - "worker"
+#      - "-l "
+#      - "info"
+#    depends_on:
+#      - db
+#      - app
+#      - redis
+#    volumes:
+#      - "./:/app"
+#
+#  celery_beat:
+#    container_name: "celery_beat"
+#    image: celery:latest
+#    command:
+#      - "celery"
+#      - "-A"
+#      - "notice_f"
+#      - "beat"
+#      - "-l "
+#      - "info"
+#    depends_on:
+#      - db
+#      - app
+#      - celery_worker
+#    volumes:
+#      - "./:./app"
