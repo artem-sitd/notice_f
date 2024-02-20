@@ -50,13 +50,13 @@ services:
 
   celery_worker:
     volumes:
-      - ".:/app"
+      - "./notice_f:/app/notice_f"
     container_name: "celery_worker"
     image: celery:latest
     command:
       - "celery"
       - "-A"
-      - "app.notice_f"
+      - "notice_f"
       - "worker"
       - "-l "
       - "info"
@@ -68,13 +68,13 @@ services:
 
   celery_beat:
     volumes:
-      - ".:/app"
+      - "./notice_f:/app/notice_f"
     container_name: "celery_beat"
     image: celery:latest
     command:
       - "celery"
       - "-A"
-      - "app.notice_f"
+      - "notice_f"
       - "beat"
       - "-l "
       - "info"
