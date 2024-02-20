@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import Mailing
 from django.utils import timezone
-from datetime import timedelta
+from datetime import timedelta, datetime
 import logging.config
 from config import dict_config
 
@@ -43,7 +43,15 @@ class MailSerializer(serializers.ModelSerializer):
                 {"end_time": ["Некорректный формат времени, необходимо использовать %Y-%m-%d %H:%M:%S"]})
 
         # Дополнительная проверка разницы между start_time и end_time
-        if value - self.initial_data['start_time'] < timedelta(minutes=10):
-            logger.info('MailSerializer (validate_end_time) Разница во времени должна быть не менее 5 минут')
-            raise serializers.ValidationError("Разница между start_time и end_time должна быть не менее 10 минут")
+        # start_time = datetime.strptime(start_time_str, "%Y-%m-%d %H:%M:%S")
+        # if value - self.initial_data['start_time'] < timedelta(minutes=10):
+        #     logger.info('MailSerializer (validate_end_time) Разница во времени должна быть не менее 5 минут')
+        #     raise serializers.ValidationError("Разница между start_time и end_time должна быть не менее 10 минут")
+        # return value
+        start_time_str = self.initial_data.get('start_time')
+        if start_time_str:
+            start_time = datetime.strptime(start_time_str, "%Y-%m-%d %H:%M:%S")
+            if value - start_time < timedelta(minutes=10):
+                logger.info('MailSerializer (validate_end_time) Разница во времени должна быть не менее 5 минут')
+                raise serializers.ValidationError("Разница между start_time и end_time должна быть не менее 10 минут")
         return value
