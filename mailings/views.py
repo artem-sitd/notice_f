@@ -28,7 +28,8 @@ class MailApi(APIView):
         mobile_code = request.data.get('mobile_code')
         tag = request.data.get('tag')
         filter_type = request.data.get('filter_type')
-        if not all([text, end_time]):
+        start_time = request.data.get('start_time')
+        if not all([text, end_time, start_time]):
             logger.info('post MailApi не все поля указаны')
             return Response({'error': 'Не все поля указаны'}, status=status.HTTP_400_BAD_REQUEST)
 
