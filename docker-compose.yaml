@@ -50,7 +50,7 @@ services:
 
   celery_worker:
     build:
-      context: "./app"
+      context: .
     container_name: "celery_worker"
     image: celery:latest
     command:
@@ -64,10 +64,9 @@ services:
       - app
       - redis
 
-
   celery_beat:
     build:
-      context: "./app"
+      context: .
     container_name: "celery_beat"
     image: celery:latest
     command:
