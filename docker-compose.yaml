@@ -59,12 +59,12 @@ services:
       - "notice_f"
       - "worker"
       - "--loglevel=INFO"
-
     depends_on:
       - db
       - app
       - redis
-
+    volumes:
+      - .:/app
 
   celery_beat:
     build:
@@ -81,3 +81,6 @@ services:
       - db
       - app
       - celery_worker
+      - redis
+    volumes:
+      - .:/app
