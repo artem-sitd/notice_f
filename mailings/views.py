@@ -80,10 +80,11 @@ class MailApi(APIView):
             logger.info('post MailApi пробуем сериализовать ')
             serialized = MailSerializer(data={'text': text, 'end_time': end_time, 'start_time':start_time, 'clients': filtered_clients},
                                         many=False)
-            serialized.is_valid(raise_exception=False)
+            serialized.is_valid(raise_exception=True)
         except ValidationError as ve:
             logger.error(f'post MailApi не удалось сериализовать {ve.detail}')
-            return Response({'error': ve.detail}, status=status.HTTP_400_BAD_REQUEST)
+
+            return Response({'error': 'ошибка валидации времени'}, status=status.HTTP_400_BAD_REQUEST)
         logger.info('post MailApi создаем объект Mailing')
         new_mailing = Mailing.objects.create(text=text, end_time=end_time, start_time=start_time)
         new_mailing.clients.set(filtered_clients)

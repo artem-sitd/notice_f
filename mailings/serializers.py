@@ -51,8 +51,14 @@ class MailSerializer(serializers.ModelSerializer):
         start_time_str = self.initial_data.get('start_time')
         formatted_end_time = datetime.strptime(formatted_end_time_str, '%Y-%m-%d %H:%M:%S')
         if start_time_str:
-            start_time = datetime.strptime(start_time_str, "%Y-%m-%d %H:%M:%S")
-            if formatted_end_time - start_time < timedelta(minutes=10):
-                logger.info('MailSerializer (validate_end_time) Разница во времени должна быть не менее 5 минут')
-                raise serializers.ValidationError("Разница между start_time и end_time должна быть не менее 10 минут")
-        return value
+            try:
+                start_time = datetime.strptime(start_time_str, "%Y-%m-%d %H:%M:%S")
+            except ValueError as ve:
+                logger.info('MailSerializer (validate_end_time) EXCEPT ValueError - Некорректный формат времени')
+                raise serializers.ValidationError(
+                    {"end_time": ["Некорректный формат времени, необходимо использовать %Y-%m-%d %H:%M:%S"]})
+            else:
+                if formatted_end_time - start_time < timedelta(minutes=10):
+                    logger.info('MailSerializer (validate_end_time) Разница во времени должна быть не менее 5 минут')
+                    raise serializers.ValidationError("Разница между start_time и end_time должна быть не менее 10 минут")
+            return value
