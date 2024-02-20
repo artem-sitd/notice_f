@@ -58,8 +58,8 @@ services:
       - "-A"
       - "notice_f"
       - "worker"
-      - "-l "
-      - "info"
+      - "--loglevel=INFO"
+
     depends_on:
       - db
       - app
@@ -76,8 +76,7 @@ services:
       - "-A"
       - "notice_f"
       - "beat"
-      - "-l "
-      - "info"
+      - "--loglevel=INFO"
     depends_on:
       - db
       - app
