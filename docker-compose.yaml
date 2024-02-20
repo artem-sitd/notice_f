@@ -49,8 +49,8 @@ services:
       - "6379:6379"
 
   celery_worker:
-    volumes:
-      - "./notice_f:/app/notice_f"
+    build:
+      context: .
     container_name: "celery_worker"
     image: celery:latest
     command:
@@ -67,8 +67,8 @@ services:
 
 
   celery_beat:
-    volumes:
-      - "./notice_f:/app/notice_f"
+    build:
+      context: .
     container_name: "celery_beat"
     image: celery:latest
     command:
