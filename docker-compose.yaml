@@ -54,7 +54,7 @@ services:
     command:
       - "celery"
       - "-A"
-      - "notice_f"
+      - "notice_f_app"
       - "worker"
       - "-l "
       - "info"
@@ -71,7 +71,7 @@ services:
     command:
       - "celery"
       - "-A"
-      - "notice_f"
+      - "notice_f_app"
       - "beat"
       - "-l "
       - "info"
