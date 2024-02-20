@@ -78,7 +78,7 @@ class MailApi(APIView):
             return Response({'error': 'По указанным критериям клиенты не найдены'}, status=status.HTTP_404_NOT_FOUND)
         try:
             logger.info('post MailApi пробуем сериализовать ')
-            serialized = MailSerializer(data={'text': text, 'end_time': end_time, start_time:'start_time', 'clients': filtered_clients},
+            serialized = MailSerializer(data={'text': text, 'end_time': end_time, 'start_time':start_time, 'clients': filtered_clients},
                                         many=False)
             serialized.is_valid(raise_exception=True)
         except ValidationError as ve:
