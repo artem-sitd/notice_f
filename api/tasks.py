@@ -1,3 +1,6 @@
+import os
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'notice_f.settings')
 import config
 import logging.config
 import requests
