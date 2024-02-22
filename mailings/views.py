@@ -1,4 +1,8 @@
 import logging.config
+from datetime import datetime
+
+from django.utils import timezone
+
 from config import dict_config
 from rest_framework import status, generics
 from rest_framework.request import Request
@@ -85,7 +89,13 @@ class MailApi(APIView):
             logger.error(f'post MailApi не удалось сериализовать {ve.detail}')
             return Response({'error': ve.detail}, status=status.HTTP_400_BAD_REQUEST)
         logger.info('post MailApi создаем объект Mailing')
-        new_mailing = Mailing.objects.create(text=text, end_time=end_time, start_time=start_time)
+
+        # присваиваем часовые пояса локальные
+        aware_start_time = timezone.make_aware(datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S'))
+        aware_end_time = timezone.make_aware(datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S'))
+
+        # сохраняем в базу
+        new_mailing = Mailing.objects.create(text=text, end_time=aware_end_time, start_time=aware_start_time)
         new_mailing.clients.set(filtered_clients)
         new_mailing.save()
         logger.info('post MailApi возвращаем ответ клиенту')
