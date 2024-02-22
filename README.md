@@ -16,16 +16,16 @@ DJANGO_SECRET_KEY="django-insecure-+o7k^h!_)xxubj*!@u65noq&9v5#z99_y)49)mek+odb^
 DJANGO_DEBUG=False\
 API_TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mzg5Mjk4MzQsImlzcyI6ImZhYnJpcXVlIiwibmFtZSI6Imh0dHBzOi8vdC5tZS9hcnRfa2FrX2RlbGEifQ.8eo8bRpbad94wGmrMNnKrh9wjh0DlsYSVOtRwmnbjdA"\
 6. НЕ ЗАБУДЬТЕ ВВЕСТИ ВАШ IP В ПЕРЕМЕННУЮ ALLOWED_HOST В `notice_f/settings.py`
-7. `sudo docker-compose build && sudo docker-compose up`
+7. `sudo docker-compose up --build`
 
 База заполняется предварительными тестовыми данными для проверок эндпойнтов.
 Перечень доступных по адресу: <b>http://ip-address:8000/api/schema/swagger/</b>
 
 ## Проблемы
-При локальной разработке celery и redis выполняют периодические задачи, однако не удалось реализовать в docker 
+<s>При локальной разработке celery и redis выполняют периодические задачи, однако не удавалось реализовать в docker 
 (KeyError: 'api.tasks.start_mailing', предполагаю не верно указываю build или прочее).
-<u>Планирую решить данную проблему в ближайшее время</u>
-
+<u>Планирую решить данную проблему в ближайшее время</u></s> /
+<b>upd 22.02.2024 проблема решена, celery включает функцию отправки на api рассылки</b>
 ## Endpoints:
 
 |        | /clients/                               | /clients/{id}/                                     | /clients/tags/                                             | /clients/tags/{id}/          |
@@ -49,4 +49,3 @@ API_TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mzg5Mjk4MzQsImlzcyI6
 
 ### Отправка рассылок:
 Для отправления рассылок - необходимо создать сущность Mailing, система автоматически мониторит готовые к отправке рассылки
-(при локальной разработке celery/redis исправно работали)
