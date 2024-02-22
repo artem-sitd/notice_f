@@ -28,7 +28,7 @@ class MailSerializer(serializers.ModelSerializer):
 
         formatted_start_time = timezone.make_aware(datetime.strptime(formatted_start_time_str, '%Y-%m-%d %H:%M:%S'))
         current_time = timezone.now()
-        if formatted_start_time - current_time < timedelta(minutes=1):
+        if formatted_start_time - current_time < timedelta(minutes=10):
             logger.info('MailSerializer (validate_start_time) Разница во времени должна быть не менее 10 минут')
             raise serializers.ValidationError(
                 f"Разница во времени должна быть не менее 10 минут, текущее время: {current_time}")
