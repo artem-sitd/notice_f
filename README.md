@@ -49,3 +49,6 @@ API_TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mzg5Mjk4MzQsImlzcyI6
 
 ### Отправка рассылок:
 Для отправления рассылок - необходимо создать сущность Mailing, система автоматически мониторит готовые к отправке рассылки
+
+## Демонстрация работы:
+[![Видео про докер](https://img.youtube.com/vi/mn2Rph8lhjw/maxresdefault.jpg)](https://www.youtube.com/watch?v=mn2Rph8lhjw)
