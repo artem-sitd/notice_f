@@ -16,6 +16,7 @@ DJANGO_SECRET_KEY="django-insecure-+o7k^h!_)xxubj*!@u65noq&9v5#z99_y)49)mek+odb^
 DJANGO_DEBUG=False\
 API_TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mzg5Mjk4MzQsImlzcyI6ImZhYnJpcXVlIiwibmFtZSI6Imh0dHBzOi8vdC5tZS9hcnRfa2FrX2RlbGEifQ.8eo8bRpbad94wGmrMNnKrh9wjh0DlsYSVOtRwmnbjdA"\
 6. НЕ ЗАБУДЬТЕ ВВЕСТИ ВАШ IP В ПЕРЕМЕННУЮ ALLOWED_HOST В `notice_f/settings.py`
+
 7. `sudo docker-compose up --build`
 
 База заполняется предварительными тестовыми данными для проверок эндпойнтов.
