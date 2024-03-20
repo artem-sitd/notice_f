@@ -5,16 +5,8 @@
 3. cd notice_f
 3. `sudo apt update; sudo apt upgrade -y; sudo apt install -y docker docker-compose`
 4. `cp .env.template .env`
-5. Заполняем вашими данными, либо вводим следующие данные:\
-POSTGRES_HOST="db"\
-POSTGRES_PORT="5432"\
-POSTGRES_USER="admin"\
-POSTGRES_PASSWORD="123"\
-POSTGRES_DB="notice_f_bd"\
-DATABASE_HOST="localhost"\
-DJANGO_SECRET_KEY="django-insecure-+o7k^h!_)xxubj*!@u65noq&9v5#z99_y)49)mek+odb^q0y75"\
-DJANGO_DEBUG=False\
-API_TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mzg5Mjk4MzQsImlzcyI6ImZhYnJpcXVlIiwibmFtZSI6Imh0dHBzOi8vdC5tZS9hcnRfa2FrX2RlbGEifQ.8eo8bRpbad94wGmrMNnKrh9wjh0DlsYSVOtRwmnbjdA"\
+5. Заполняем вашими данными:\
+
 6. НЕ ЗАБУДЬТЕ ВВЕСТИ ВАШ IP В ПЕРЕМЕННУЮ ALLOWED_HOST В `notice_f/settings.py`
 
 7. `sudo docker-compose up --build`
